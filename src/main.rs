@@ -34,8 +34,10 @@ fn page(title: &str, content: Markup) -> Markup {
             body {
                 aside#sidebar {
                     section {
-                        img src={(SITE_ROOT) "/" (AVATAR)} alt="" class="avatar";
-                        h1.text-highlight.center { (NAME) }
+                        a href=(SITE_ROOT) {
+                            img src={(SITE_ROOT) "/" (AVATAR)} alt="" class="avatar";
+                            h1.text-highlight.center { (NAME) }
+                        }
                         @if SOCIAL_MEDIAS.len() > 0 {
                             p.text-highlight.center {
                                 i.fab.(SOCIAL_MEDIAS[0].0).tooltip {
@@ -123,8 +125,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                     .as_bytes(),
                 )?;
             }
-
-            println!("{:?}, {:?}", path, last_modified);
         }
 
         Ok(())
