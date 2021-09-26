@@ -5,6 +5,8 @@ use std::path::Path;
 use std::time::UNIX_EPOCH;
 
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use gray_matter::engine::YAML;
+use gray_matter::Matter;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 const NAME: &str = "달토깽";
@@ -78,7 +80,11 @@ fn post(title: &str, datetime: DateTime<Utc>, content: Markup) -> Markup {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    fn recurse_posts(source: &str, target: String) -> Result<(), Box<dyn Error>> {
+    fn recurse_posts(
+        source: &str,
+        target: String,
+        matter: &Matter<YAML>,
+    ) -> Result<(), Box<dyn Error>> {
         if !Path::new(&target).exists() {
             fs::create_dir_all(&target)?;
         }
@@ -106,18 +112,27 @@ fn main() -> Result<(), Box<dyn Error>> {
                 recurse_posts(
                     path.to_str().unwrap(),
                     format!("{}/{}", target, path.file_name().unwrap().to_str().unwrap()),
+                    &matter,
                 )?;
             } else if path.extension().unwrap() == "html" {
                 let file_stem = path.file_stem().unwrap().to_str().unwrap();
+                let result = matter.parse(&fs::read_to_string(&path)?);
+                let title = result
+                    .data
+                    .as_ref()
+                    .map(|data| data["title"].as_string().ok())
+                    .flatten()
+                    .unwrap_or(file_stem.to_string());
+
                 let mut f = File::create(format!("{}/{}.html", target, file_stem))?;
                 f.write_all(
                     page(
-                        file_stem,
+                        &title,
                         post(
-                            file_stem,
+                            &title,
                             last_modified,
                             html! {
-                                (PreEscaped(fs::read_to_string(&path)?))
+                                (PreEscaped(result.content))
                             },
                         ),
                     )
@@ -130,60 +145,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         Ok(())
     }
 
+    let matter = Matter::<YAML>::new();
     recurse_posts(
-        concat!(env!("CARGO_MANIFEST_DIR"), "/posts"),
-        concat!(env!("CARGO_MANIFEST_DIR"), "/dist/posts").to_string(),
-    )?;
-
-    let mut f = File::create(concat!(env!("CARGO_MANIFEST_DIR"), "/dist/index.html"))?;
-    f.write_all(
-        page(
-            "lunabunn",
-            post(
-                "프로필 정보",
-                Utc::now(),
-                html! {
-                    table style="max-width: 500px; text-align: center;" {
-                        tr {
-                            td { strong { "이름" } }
-                            td { "달토깽 (문루나)" }
-                        }
-                        tr {
-                            td { strong { "나이" } }
-                            td { "3살" }
-                        }
-                        tr {
-                            td { strong { "성별" } }
-                            td { "남자" }
-                        }
-                        tr {
-                            td { strong { "사는 곳" } }
-                            td { "달" }
-                        }
-                        tr {
-                            td colspan="2" { strong { "취미" } }
-                        }
-                        tr {
-                            td colspan="2" { "프로그래밍, 게임 개발, 노래, 작곡, 그림 + α" }
-                        }
-                        tr {
-                            td colspan="2" { strong { "좋아하는 것" } }
-                        }
-                        tr {
-                            td colspan="2" { "침대, 핫초코, 귀여운 사람" }
-                        }
-                        tr {
-                            td colspan="2" { strong { "싫어하는 것" } }
-                        }
-                        tr {
-                            td colspan="2" { "민트초코" }
-                        }
-                    }
-                },
-            ),
-        )
-        .into_string()
-        .as_bytes(),
+        concat!(env!("CARGO_MANIFEST_DIR"), "/pages"),
+        concat!(env!("CARGO_MANIFEST_DIR"), "/dist").to_string(),
+        &matter,
     )?;
 
     Ok(())

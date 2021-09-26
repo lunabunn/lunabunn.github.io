@@ -8,3 +8,4 @@ edition = "2018"
 [dependencies]
 maud = "0.22"
 chrono = "0.4"
+gray_matter = "0.2"
