@@ -28,3 +28,9 @@ for (let e of document.getElementsByClassName("tooltip")) {
         });
     };
 }
+
+for (let e of document.getElementsByTagName("time")) {
+    console.log(e);
+    let date = new Date(e.dateTime);
+    e.innerText = `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
+}
