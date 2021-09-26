@@ -1,0 +1,352 @@
+/**
+ * Reset
+ **/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: "";
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/**
+ * Main
+ **/
+
+@font-face {
+    font-family: "MapoFlowerIsland";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    --color-fg1: #000000;
+    --color-bg1: #ffffff;
+    --color-fg2: #fff4cd;
+    --color-bg2: #2e2334;
+    --color-highlight: #f08080;
+
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica", "Arial", sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji";
+    --font-highlight: MapoFlowerIsland, var(--font-body);
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg1);
+}
+
+#sidebar {
+    position: fixed;
+    height: 100vh;
+    width: 400px;
+    background-color: var(--color-bg2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    left: 0;
+    top: 0;
+    font-size: 1.25rem;
+}
+
+#sidebar h1 {
+    font-size: 3em;
+}
+
+#main {
+    position: absolute;
+    left: 400px;
+    right: 0;
+    padding: 125px 100px;
+    font-family: var(--font-body);
+    color: var(--color-fg1);
+    font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 1280px) {
+    #sidebar {
+        position: absolute;
+        width: 100vw;
+        height: 500px;
+    }
+
+    #main {
+        top: 500px;
+        left: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .timestamp {
+        text-align: center;
+    }
+}
+
+#main > *:first-child {
+    margin-top: 0 !important;
+}
+
+#main > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+.avatar {
+    width: 175px;
+    height: 175px;
+    border: solid 5px var(--color-highlight);
+    border-radius: 50%;
+    display: block;
+    margin: 0px auto;
+}
+
+.bg-highlight {
+    background-color: var(--color-bg2);
+}
+
+.post-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.timestamp {
+    margin-bottom: 25px;
+    color: gray;
+    font-size: 1.25rem;
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin: 1.25rem 0;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 1.25rem 0;
+    font-weight: bold;
+}
+
+p {
+    margin: 1.25rem 0;
+    line-height: 1.4;
+}
+
+table {
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 15px;
+    border-collapse: separate;
+}
+
+td {
+    padding: 0.5rem 0.25rem;
+}
+
+th,
+td {
+    border: 1px solid black;
+}
+
+table tr:first-child td {
+    border-top: none;
+}
+
+table td:first-child {
+    border-left: none;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+table td:last-child {
+    border-right: none;
+}
+
+strong {
+    font-weight: bold;
+}
+
+.text-highlight {
+    font-family: var(--font-highlight);
+    color: var(--color-fg2);
+    text-shadow: 0.05em 0.05em var(--color-highlight);
+}
+
+.center {
+    text-align: center;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s opacity;
+    background-color: var(--color-highlight);
+    color: var(--color-bg2);
+    font-family: var(--font-body);
+    text-shadow: none;
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 6px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -13px);
+    bottom: 100%;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.tooltip.copied .tooltiptext {
+    content: "복사됨!";
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6.3px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: var(--color-highlight) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
